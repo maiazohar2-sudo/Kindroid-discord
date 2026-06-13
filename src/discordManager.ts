@@ -219,13 +219,17 @@ async function createDiscordClientForBot(
       );
 
       // Call Kindroid AI with the conversation context
+const aiResult = await callKindroidAI(
+botConfig.sharedAiCode,
+conversationArray,
+botConfig.enableFilter
+);
 
 if (aiResult.type === "rate_limited") {
 return;
 }
 
 let finalReply = aiResult.reply;
-
 if (!finalReply.includes("[Done]")) {
 conversationArray.push({
 role: "assistant",
