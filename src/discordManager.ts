@@ -24,8 +24,9 @@ const botToBotChains = new Map<string, BotConversationChain>();
 
 // Track active bot instances
 const activeBots = new Map<string, Client>();
-
 // Track DM conversation counts with proper typing
+const dmConversationCounts = new Map<string, DMConversationCount>();
+
 async function sendSplitMessage(message: Message, text: string): Promise<void> {
 const maxLength = 1900;
 const chunks: string[] = [];
@@ -44,10 +45,14 @@ current += (current ? "\n" : "") + paragraph;
 if (current.trim()) chunks.push(current.trim());
 
 for (let i = 0; i < chunks.length; i++) {
-if (i === 0) {
-await message.reply(chunks[i]);
-} else {
-await message.channel.send(chunks[i]);
+  if (i === 0) {
+    await message.reply(chunks[i]);
+  } else if (
+    message.channel instanceof BaseGuildTextChannel ||
+    message.channel instanceof DMChannel
+  ) {
+    await message.channel.send(chunks[i]);
+  }
 }
 }
 }
