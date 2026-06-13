@@ -345,7 +345,44 @@ async function handleDirectMessage(
       }
 
       // Send the AI's reply
-      await sendSplitMessage(message, aiResult.reply);
+      
+      
+      
+      let finalReply = aiResult.reply;
+
+if (!finalReply.includes("[Done]")) {
+conversationArray.push({
+username: "assistant",
+text: finalReply,
+});
+
+conversationArray.push({
+username: "user",
+text: "Continue exactly where you left off. Keep it under 120 words. End with [Done].",
+});
+
+const continuation = await callKindroidAI(
+botConfig.sharedAiCode,
+conversationArray,
+botConfig.enableFilter
+);
+
+if (continuation.type !== "rate_limited") {
+finalReply += "\n\n" + continuation.reply;
+}
+}
+
+      
+      
+      
+await sendSplitMessage(message, finalReply);      
+      
+      
+      
+      
+      
+      
+
     }
   } catch (error) {
     console.error(`[Bot ${botConfig.id}] DM Error:`, error);
