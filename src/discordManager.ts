@@ -219,25 +219,46 @@ async function createDiscordClientForBot(
       );
 
       // Call Kindroid AI with the conversation context
-      const aiResult = await callKindroidAI(
-        botConfig.sharedAiCode,
-        conversationArray,
-        botConfig.enableFilter
-      );
+
+if (aiResult.type === "rate_limited") {
+return;
+}
+
+let finalReply = aiResult.reply;
+
+if (!finalReply.includes("[Done]")) {
+conversationArray.push({
+role: "assistant",
+content: finalReply,
+});
+
+conversationArray.push({
+role: "user",
+content: "Continue exactly where you left off. End with [Done].",
+});
+
+const continuation = await callKindroidAI(
+botConfig.sharedAiCode,
+conversationArray,
+botConfig.enableFilter
+);
+
+if (continuation.type !== "rate_limited") {
+finalReply += "\n\n" + continuation.reply;
+}
+}
 
       // If rate limited, silently ignore
-      if (aiResult.type === "rate_limited") {
-        return;
-      }
+      
 
       // If it was a mention, reply to the message. Otherwise, send as normal message
       if (isMentioned) {
-        await sendSplitMessage(message, aiResult.reply);
+        await sendSplitMessage(message, finalReply);
       } else if (
         message.channel instanceof BaseGuildTextChannel ||
         message.channel instanceof DMChannel
       ) {
-        await sendSplitMessage(message, aiResult.reply);
+        await sendSplitMessage(message, finalReply);
       }
     } catch (error) {
       console.error(`[Bot ${botConfig.id}] Error:`, error);
