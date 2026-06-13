@@ -238,7 +238,7 @@ text: finalReply,
 
 conversationArray.push({
 username: "user",
-text: "Continue exactly where you left off. End with [Done].",
+text: "Continue exactly where you left off. Keep it under 120 words. End with [Done]."
 });
 
 const continuation = await callKindroidAI(
