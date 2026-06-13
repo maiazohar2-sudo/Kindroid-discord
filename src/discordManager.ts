@@ -230,7 +230,10 @@ return;
 }
 
 let finalReply = aiResult.reply;
-if (!finalReply.includes("[Done]")) {
+let continueCount = 0;
+
+while (!finalReply.includes("[Done]") && continueCount < 3) {
+continueCount++;
 conversationArray.push({
 username: "assistant",
 text: finalReply,
@@ -350,7 +353,10 @@ async function handleDirectMessage(
       
       let finalReply = aiResult.reply;
 
-if (!finalReply.includes("[Done]")) {
+let continueCount = 0;
+
+while (!finalReply.includes("[Done]") && continueCount < 3) {
+continueCount++;
 conversationArray.push({
 username: "assistant",
 text: finalReply,
