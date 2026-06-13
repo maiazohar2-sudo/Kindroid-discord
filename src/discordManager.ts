@@ -26,7 +26,31 @@ const botToBotChains = new Map<string, BotConversationChain>();
 const activeBots = new Map<string, Client>();
 
 // Track DM conversation counts with proper typing
-const dmConversationCounts = new Map<string, DMConversationCount>();
+async function sendSplitMessage(message: Message, text: string): Promise<void> {
+const maxLength = 1900;
+const chunks: string[] = [];
+
+let current = "";
+
+for (const paragraph of text.split("\n")) {
+if ((current + "\n" + paragraph).length > maxLength) {
+if (current.trim()) chunks.push(current.trim());
+current = paragraph;
+} else {
+current += (current ? "\n" : "") + paragraph;
+}
+}
+
+if (current.trim()) chunks.push(current.trim());
+
+for (let i = 0; i < chunks.length; i++) {
+if (i === 0) {
+await message.reply(chunks[i]);
+} else {
+await message.channel.send(chunks[i]);
+}
+}
+}
 
 // Helper function to check if the bot can respond to a channel before responding
 function shouldAllowBotMessage(message: Message): boolean {
@@ -205,12 +229,12 @@ async function createDiscordClientForBot(
 
       // If it was a mention, reply to the message. Otherwise, send as normal message
       if (isMentioned) {
-        await message.reply(aiResult.reply);
+        await sendSplitMessage(message, aiResult.reply);
       } else if (
         message.channel instanceof BaseGuildTextChannel ||
         message.channel instanceof DMChannel
       ) {
-        await message.channel.send(aiResult.reply);
+        await sendSplitMessage(message, aiResult.reply);
       }
     } catch (error) {
       console.error(`[Bot ${botConfig.id}] Error:`, error);
@@ -293,7 +317,7 @@ async function handleDirectMessage(
       }
 
       // Send the AI's reply
-      await message.reply(aiResult.reply);
+      await sendSplitMessage(message, aiResult.reply);
     }
   } catch (error) {
     console.error(`[Bot ${botConfig.id}] DM Error:`, error);
