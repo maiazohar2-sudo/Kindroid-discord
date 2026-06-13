@@ -55,8 +55,6 @@ for (let i = 0; i < chunks.length; i++) {
   }
 }
 }
-}
-
 // Helper function to check if the bot can respond to a channel before responding
 function shouldAllowBotMessage(message: Message): boolean {
   // If in DM, skip chain logic entirely
