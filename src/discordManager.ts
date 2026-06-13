@@ -232,13 +232,13 @@ return;
 let finalReply = aiResult.reply;
 if (!finalReply.includes("[Done]")) {
 conversationArray.push({
-role: "assistant",
-content: finalReply,
+username: "assistant",
+text: finalReply,
 });
 
 conversationArray.push({
-role: "user",
-content: "Continue exactly where you left off. End with [Done].",
+username: "user",
+text: "Continue exactly where you left off. End with [Done].",
 });
 
 const continuation = await callKindroidAI(
