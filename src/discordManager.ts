@@ -241,7 +241,7 @@ text: finalReply,
 
 conversationArray.push({
 username: "user",
-text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Only add new content. Keep it under 120 words. End with [Done].",
+text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. End with [Done]."
 });
 
 const continuation = await callKindroidAI(
@@ -364,7 +364,7 @@ text: finalReply,
 
 conversationArray.push({
 username: "user",
-text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Only add new content. Keep it under 120 words. End with [Done].",
+text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. End with [Done]."
 });
 
 const continuation = await callKindroidAI(
