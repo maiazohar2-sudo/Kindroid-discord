@@ -232,7 +232,7 @@ return;
 let finalReply = aiResult.reply;
 let continueCount = 0;
 
-while (!finalReply.includes("[Done]") && continueCount < 3) {
+while (!finalReply.includes("◇") && continueCount < 3) {
 continueCount++;
 conversationArray.push({
 username: "assistant",
@@ -241,7 +241,7 @@ text: finalReply,
 
 conversationArray.push({
 username: "user",
-text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. End with [Done]."
+text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. ...End the final continuation with ◇."
 });
 
 const continuation = await callKindroidAI(
@@ -355,7 +355,7 @@ async function handleDirectMessage(
 
 let continueCount = 0;
 
-while (!finalReply.includes("[Done]") && continueCount < 3) {
+while (!finalReply.includes("◇") && continueCount < 3) {
 continueCount++;
 conversationArray.push({
 username: "assistant",
@@ -364,7 +364,7 @@ text: finalReply,
 
 conversationArray.push({
 username: "user",
-text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. End with [Done]."
+text: "Continue seamlessly from the exact last sentence. Do not repeat anything. Do not restart the thought. Do not describe yourself, narrate actions, use stage directions, or explain that you are continuing. Stay in the same voice and point of view as the previous text. Only add new content. Keep it under 120 words. ...End the final continuation with ◇."
 });
 
 const continuation = await callKindroidAI(
